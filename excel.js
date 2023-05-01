@@ -20,11 +20,20 @@ document.getElementById('button').addEventListener("click", () => {
          let data = event.target.result;
          let workbook = XLSX.read(data,{type:"binary"});
          console.log(workbook);
+         const finalObj = {};
          workbook.SheetNames.forEach(sheet => {
               let rowObject = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
               console.log(rowObject);
-              document.getElementById("jsondata").innerHTML = JSON.stringify(rowObject,undefined,4)
+              //document.getElementById("jsondata").innerHTML = JSON.stringify(rowObject,undefined,4)
+             rowObject.forEach((eachRow) => {
+                const {key, value} = eachRow; 
+                finalObj[key] = value;         
+                return eachRow;
+              });
          });
+            
+         console.log('finalObj ==> ', finalObj);
+         document.getElementById("jsondata").innerHTML = JSON.stringify(finalObj,undefined,4)
         }
     }
 });
